@@ -16,6 +16,7 @@ patterns directly impact CPU performance in real-world environments.
 - Apply SIMD (ARM NEON / AArch64) to process multiple particles in parallel.
 - Evaluate performance trade-offs on Android, considering OS behavior and mobile CPU constraints.
 - Measure and compare different instruction choices, data layouts, and algorithm variants to validate which optimizations actually improve performance.
+- Explore job-based multithreading to scale physics updates across CPU cores.
 
 ---
 
@@ -27,6 +28,7 @@ patterns directly impact CPU performance in real-world environments.
 - **Integration model:** particle interactions are computed using a CPU-bound N-body–style loop, optimized for instruction-level and data-level parallelism.
 - **Practical constraints:**
   - FPS and debug information are written directly into the simulation buffer to avoid Android logging and debugging overhead.
+- **Multithreading:** physics updates are distributed across a fixed worker thread pool using a job-based execution model.
 
 ---
 
@@ -35,6 +37,8 @@ patterns directly impact CPU performance in real-world environments.
 - **No GPU acceleration:** The simulation intentionally runs entirely on the CPU.
   The goal is to study data-oriented design, SIMD usage, cache behavior, and threading strategies on ARM CPUs.
   Using the GPU would shift the performance bottleneck and invalidate the purpose of the experiment.
+- **CPU parallelism:** a custom job system is used instead of external frameworks to retain control over
+  scheduling and synchronization costs.
 
 ---
 
